@@ -1,0 +1,148 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://game-assets/stylebox.png" type="Texture" id=1]
+[ext_resource path="res://scenes/ui/MainMenu.gd" type="Script" id=2]
+[ext_resource path="res://game-assets/bird.png" type="Texture" id=3]
+[ext_resource path="res://game-assets/background.png" type="Texture" id=4]
+[ext_resource path="res://game-assets/ground.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 64, 4 )
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 2
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 2
+atlas = ExtResource( 3 )
+region = Rect2( 0, 8, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 2
+atlas = ExtResource( 3 )
+region = Rect2( 0, 16, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 2
+atlas = ExtResource( 3 )
+region = Rect2( 0, 8, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 8, 8 )
+margin_left = 1.0
+margin_right = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+expand_margin_left = 1.0
+expand_margin_right = 1.0
+expand_margin_top = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxTexture" id=7]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 8, 8 )
+margin_left = 1.0
+margin_right = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="Animation" id=9]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Label:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 7.5, 5 ), Vector2( 7.5, 10 ) ]
+}
+
+[node name="MainMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( -543, -281 )
+script = ExtResource( 2 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 64, 64 )
+texture = ExtResource( 4 )
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2( 64, 64 )
+z_index = -1
+collision_layer = 2
+collision_mask = 2
+
+[node name="Sprite" type="Sprite" parent="Ground"]
+position = Vector2( -64, 56 )
+z_index = 1
+texture = ExtResource( 5 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2( 0, 60 )
+shape = SubResource( 10 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -56.5
+margin_top = 5.0
+margin_right = 56.5
+margin_bottom = 40.0
+text = "Flappy bird
+8bits"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Bird" type="AnimatedSprite" parent="Label"]
+position = Vector2( 86.5, 26 )
+frames = SubResource( 5 )
+playing = true
+
+[node name="HI-SCORE" type="Label" parent="."]
+margin_top = 112.0
+margin_right = 40.0
+margin_bottom = 128.0
+
+[node name="Play" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -34.0
+margin_top = -11.0
+margin_right = 34.0
+margin_bottom = 11.0
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/normal = SubResource( 6 )
+text = "Play"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "text"
+anims/text = SubResource( 9 )
+
+[connection signal="pressed" from="Play" to="." method="_on_Play_pressed"]
